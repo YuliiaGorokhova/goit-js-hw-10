@@ -3,56 +3,60 @@ import { fetchCountries } from './fetchCountries';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
+const inputEl = document.querySelector('#search-box');
+const countryList = document.querySelector('.country-list');
 const DEBOUNCE_DELAY = 300;
 
+inputEl.addEventListener(
+  'input',
+  debounce(evt => {
+    const trimmedValue = inputEl.value.trim();
+        if (trimmedValue !== '') {
+      fetchCountries(trimmedValue).then(foundData => {
+        if (foundData.length > 10) {
+          Notiflix.Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          );
+        } else if (foundData.length === 0) {
+          Notiflix.Notify.failure('Oops, there is no country with that name');
+        } else if (foundData.length >= 2 && foundData.length <= 10) {
+          renderCountryList(foundData);
+        } else if (foundData.length === 1) {
+          renderOneCountry(foundData);
+        }
+      });
+    }
+  }, DEBOUNCE_DELAY)
+);
 
-let name = '';
-
-const inputEl = document.querySelector('#search-box');
-const listEl = document.querySelector('.country-list');
-
-inputEl.addEventListener('input', debounce(onInputHandler, 500));
-
-function onInputHandler(event) {
-  listEl.innerHTML = '';
-  name = event.target.value.trim();
-  if (name.length < 1) return;
-
-  fetchCountries(name)
-    .then(countries => {
-      if (countries.length > 10) {
-        Notiflix.Notify.info(
-          'Too many matches found. Please enter a more specific name.'
-        );
-        return;
-      } else if ((countries.length < 10) & (countries.length > 2)) {
-        renderMarkupList(countries);
-        return;
-      } else if (countries.length === 1) {
-        renderMarkupUnique(countries);
-        return;
-      }
-    })
-    .catch(error =>
-      Notiflix.Notify.failure('Oops, there is no country with  that name')
-    );
-}
-
-function renderMarkupList(countries) {
+function renderCountryList(countries) {
   const markup = countries
-    .map(({ name, flags }) => {
-      return `<li class="list-item"><div><img class="icon" width="60" src="${flags.svg}" alt="${name.official}"/><p>${name.official}</p></div></li>`;
+    .map(country => {
+      return `<li>
+      <img src="${country.flags.svg}" 
+      alt="Flag of ${country.name.official}" 
+      width="50" hight="30">
+         <b>${country.name.official}</p>
+                </li>`;
     })
     .join('');
-  listEl.innerHTML = markup;;
+  countryList.innerHTML = markup;
 }
 
-function renderMarkupUnique(countries) {
+function renderOneCountry(countries) {
   const markup = countries
-    .map(({ languages, name, capital, population, flags }) => {
-      const languagesValues = Object.values(languages).join(', ');
-      return `<li class="list-item"><div><img class="icon" width="40" src="${flags.svg}" alt="${name.official}"/><p class="capital">${name.official}</p></div><div class="bottom-info"><p><span class="title">Capital:</span> ${capital}</p><p><span class="title">Population:</span> ${population}</p><p><span class="title">Languages:</span> ${languagesValues}</p></div></li>`;
+    .map(country => {
+      return `<li>
+      <img src="${country.flags.svg}" alt="Flag of ${
+        country.name.official
+      }" width="70" hight="50">
+         <b>${country.name.official}</b></p>
+            <p><b>Capital</b>: ${country.capital}</p>
+            <p><b>Population</b>: ${country.population}</p>
+            <p><b>Languages</b>: ${Object.values(country.languages)} </p>
+                </li>`;
     })
     .join('');
-  listEl.innerHTML = markup;;
+  countryList.innerHTML = markup;
 }
+
