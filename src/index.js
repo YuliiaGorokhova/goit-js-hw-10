@@ -32,12 +32,11 @@ inputEl.addEventListener(
 function renderCountryList(countries) {
   const markup = countries
     .map(country => {
-      return `<li>
-      <img src="${country.flags.svg}" 
+      return `<ul class="country-list">
+      <li><img src="${country.flags.svg}" 
       alt="Flag of ${country.name.official}" 
-      width="50" hight="30">
-         <b>${country.name.official}</p>
-                </li>`;
+      width="50" hight="30"> ${country.name.official}</p>
+      </li></ul>`;
     })
     .join('');
   countryList.innerHTML = markup;
@@ -46,17 +45,24 @@ function renderCountryList(countries) {
 function renderOneCountry(countries) {
   const markup = countries
     .map(country => {
-      return `<li>
-      <img src="${country.flags.svg}" alt="Flag of ${
-        country.name.official
-      }" width="70" hight="50">
-         <b>${country.name.official}</b></p>
-            <p><b>Capital</b>: ${country.capital}</p>
-            <p><b>Population</b>: ${country.population}</p>
-            <p><b>Languages</b>: ${Object.values(country.languages)} </p>
-                </li>`;
+      return `<div class="country-info">
+      <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="50" hight="30">
+        <p class="title-country">${country.name.official}</p>
+        <p><span class="title"> Capital: </span> ${country.capital}</p>
+        <p><span class="title"> Population:</span> ${country.population}</p>
+        <p><span class="title"> Languages:</span> ${Object.values(country.languages)}</p>
+        </div>`;
     })
     .join('');
   countryList.innerHTML = markup;
 }
 
+{/* <li class="list-item">
+  <div class="top-info">
+    <img class="icon" width="40" src="${flags.svg}" alt="${name.official}"/> */}
+    // <p class="capital">${name.official}</p></div>
+    // <div class="bottom-info">
+    //   <p><span class="title">Capital:</span> ${capital}</p>
+    //   <p><span class="title">Population:</span> ${population}</p>
+    //   <p><span class="title">Languages:</span> ${languagesValues}</p>
+    //   </div></li>
