@@ -46,8 +46,8 @@ function renderOneCountry(countries) {
   const markup = countries
     .map(country => {
       return `<div class="country-info">
-      <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="50" hight="30">
-        <p class="title-country">${country.name.official}</p>
+      <div class="title-country"><img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="50" hight="30">
+        ${country.name.official}</div>
         <p><span class="title"> Capital: </span> ${country.capital}</p>
         <p><span class="title"> Population:</span> ${country.population}</p>
         <p><span class="title"> Languages:</span> ${Object.values(country.languages)}</p>

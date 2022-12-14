@@ -20,6 +20,8 @@ body {
 }
 
 .country-list {
+  display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0;
 }
@@ -27,6 +29,7 @@ body {
 .country-info {
   display: flex;
   align-items: center;
+flex-direction: column;
   gap: 10px;
 }
 
@@ -37,5 +40,4 @@ body {
 
 .title {
   font-weight: 700;
-  font-size: 20px;
-}
+  }
