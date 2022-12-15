@@ -51,7 +51,7 @@ function renderCountryList(countries) {
       </li></ul>`;
     })
     .join('');
-  countryList.innerHTML = markup;
+    return markup;
 }
 
 function renderOneCountry(countries) {
@@ -68,5 +68,5 @@ function renderOneCountry(countries) {
         )}</p>`;
     })
     .join('');
-  countryInfo.innerHTML = markup;
+    return markup;
 }
